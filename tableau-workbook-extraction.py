@@ -52,6 +52,6 @@ colKeep = [x for x in df.columns if x not in colRemove]
 df = df[colKeep]
 
 # store results and finish
-print("Saving results...")
+print("Saving results in " + outFile + "...")
 df.to_csv(path_or_buf = outFile, index = False)
 input("Done! Press Enter to continue...")
