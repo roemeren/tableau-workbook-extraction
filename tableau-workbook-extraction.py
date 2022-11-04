@@ -28,8 +28,9 @@ with suppress_stdout():
     inpTwb = Workbook(inpFile)
 df1 = pd.DataFrame(inpTwb.datasources, columns = ["data_source"])
 df1["fields"] = df1.apply(lambda x: list(x.data_source.fields.values()), axis = 1)
-df1["data_source_name"] = df1.apply(lambda x: x.data_source.name, axis = 1)
-df1["data_source_caption"] = df1.apply(lambda x: x.data_source.caption, axis = 1)
+dsAttr = ["name", "caption"]
+for attr in dsAttr:
+    df1["data_source_" + attr] = df1.apply(lambda x: getattr(x.data_source, attr), axis = 1)
 df2 = df1.apply(lambda x: pd.Series(x['fields']), axis = 1)
 dfList = [df1, df2]
 df = pd.concat(dfList, axis = 1)
@@ -41,13 +42,9 @@ df = pd.melt(df, id_vars = colId, value_vars = colVal)
 df = df[df["value"].notnull()]
 
 # extract field attributes
-df["field_id"] = df.apply(lambda x: x.value.id, axis = 1)
-df["field_caption"] = df.apply(lambda x: x.value.caption, axis = 1)
-df["field_datatype"] = df.apply(lambda x: x.value.datatype, axis = 1)
-df["field_role"] = df.apply(lambda x: x.value.role, axis = 1)
-df["field_type"] = df.apply(lambda x: x.value.type, axis = 1)
-df["field_alias"] = df.apply(lambda x: x.value.alias, axis = 1)
-df["field_calculation"] = df.apply(lambda x: x.value.calculation, axis = 1)
+fieldAttr = ["id", "caption", "datatype", "role", "type", "alias", "calculation", "description", "hidden"]
+for attr in fieldAttr:
+    df["field_" + attr] = df.apply(lambda x: getattr(x.value, attr) , axis = 1)
 
 # remove intermediate results
 colRemove = ["data_source", "fields", "variable", "value"]
