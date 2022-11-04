@@ -1,0 +1,3 @@
+pandas==1.4.4
+tableaudocumentapi==0.10
+easygui==0.98.3
