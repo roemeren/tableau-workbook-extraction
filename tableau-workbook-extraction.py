@@ -4,6 +4,7 @@ import easygui
 from tableaudocumentapi import Workbook
 import pandas as pd
 
+# suppress console output when workbook is opened
 # source: http://thesmithfam.org/blog/2012/10/25/temporarily-suppress-console-output-in-python/
 @contextmanager
 def suppress_stdout():
