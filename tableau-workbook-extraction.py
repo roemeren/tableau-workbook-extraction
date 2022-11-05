@@ -3,6 +3,7 @@ import sys, os
 import easygui
 from tableaudocumentapi import Workbook
 import pandas as pd
+import numpy as np
 
 # suppress console output when workbook is opened
 # source: http://thesmithfam.org/blog/2012/10/25/temporarily-suppress-console-output-in-python/
@@ -46,6 +47,9 @@ df = df[df["value"].notnull()]
 fieldAttr = ["id", "caption", "datatype", "role", "type", "alias", "calculation", "description", "hidden"]
 for attr in fieldAttr:
     df["field_" + attr] = df.apply(lambda x: getattr(x.value, attr) , axis = 1)
+
+# additional transformations
+df["field_hidden"] = np.where(df["field_hidden"] == "true", 1, 0)
 
 # remove intermediate results
 colRemove = ["data_source", "fields", "variable", "value"]
